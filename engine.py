@@ -65,7 +65,7 @@ def train_one_epoch(model, criterion, data_loader,
     total = len(data_loader)
 
     contrast_loss = 0.0
-
+#---------加
     def da(samples_c, i):
         mask = random.randint(0, 0.25 * len(samples_c[i]))
         new_samples_c = samples_c
