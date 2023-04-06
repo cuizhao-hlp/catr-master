@@ -1,8 +1,6 @@
 import torch
 from torch.utils.data import DataLoader
 
-import pdb
-
 import numpy as np
 import time
 import sys
@@ -15,7 +13,6 @@ from engine import train_one_epoch, evaluate
 
 
 def main(config):
-    #config初始化参数设计
     device = torch.device(config.device)
     print(f'Initializing Device: {device}')
 
@@ -42,11 +39,6 @@ def main(config):
         param_dicts, lr=config.lr, weight_decay=config.weight_decay)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, config.lr_drop)
 
-
-    #print(model)
-
-    #print(criterion)
-
     dataset_train = coco.build_dataset(config, mode='training')
     dataset_val = coco.build_dataset(config, mode='validation')
     print(f"Train: {len(dataset_train)}")
@@ -72,8 +64,6 @@ def main(config):
         lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
         config.start_epoch = checkpoint['epoch'] + 1
 
-    pdb.set_trace()
-
     print("Start Training..")
     for epoch in range(config.start_epoch, config.epochs):
         print(f"Epoch: {epoch}")
@@ -81,7 +71,6 @@ def main(config):
             model, criterion, data_loader_train, optimizer, device, epoch, config.clip_max_norm)
         lr_scheduler.step()
         print(f"Training Loss: {epoch_loss}")
-        #加一个contrast loss
 
         torch.save({
             'model': model.state_dict(),
